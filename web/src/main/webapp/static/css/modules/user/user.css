@@ -1,0 +1,12 @@
+.loginForm {
+  width: 400px;
+  margin: 0 auto;
+}
+.loginForm label {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+.btn_box {
+  padding-left: 80px;
+}

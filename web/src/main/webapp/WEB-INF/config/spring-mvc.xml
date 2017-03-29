@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 包扫描路径 -->
+    <context:component-scan base-package="com.controller" />
+
+    <!-- 配置default servlet, 将静态资源交由web服务器自己处理 -->
+    <!--<mvc:default-servlet-handler/>-->
+
+    <!-- 配置静态资源 -->
+    <!--<mvc:resources mapping="/*.html" location="/"/>-->
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
+    <!-- if you use annotation you must configure following setting -->
+    <!-- 配置fastjson作为json解析器 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="fastJsonConfig">
+                    <bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
+                        <property name="features">
+                            <list>
+                                <value>AllowArbitraryCommas</value>
+                                <value>AllowUnQuotedFieldNames</value>
+                                <value>DisableCircularReferenceDetect</value>
+                            </list>
+                        </property>
+                        <property name="serializerFeatures">
+                            <list>
+                                <value>WriteMapNullValue</value>
+                                <value>QuoteFieldNames</value>
+                                <value>WriteDateUseDateFormat</value>
+                                <value>WriteNullListAsEmpty</value>
+                                <value>WriteNullNumberAsZero</value>
+                                <value>WriteNullStringAsEmpty</value>
+                                <value>DisableCircularReferenceDetect</value>
+                            </list>
+                        </property>
+                        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <beans>
+        <!-- 配置异常拦截器 -->
+        <bean name="exceptionResolver" class="com.exception.ExceptionHandler"></bean>
+        <!-- spring 3 视图解析器 -->
+        <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+            <!--<property name="prefix" value="/WEB-INF/view/jsp/"/>-->
+            <!--<property name="suffix" value=".jsp" />-->
+        <!--</bean>-->
+
+        <!-- spring 4 视图解析器 -->
+        <mvc:view-resolvers>
+            <mvc:jsp prefix="/WEB-INF/view/" suffix=".jsp"/>
+        </mvc:view-resolvers>
+    </beans>
+
+</beans>

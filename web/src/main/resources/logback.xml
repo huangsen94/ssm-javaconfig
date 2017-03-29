@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- scan 是否定期扫描xml文件， scanPeriod是说扫描周期是30秒-->
+<configuration scan="true" scanPeriod="30 seconds" debug="true" packagingData="true">
+    <!-- 属性 -->
+    <property name="appName" value="ssm"/>
+    <property name="USER_HOME" value="/log/${appName}"/>
+    <property name="fmt" value="[%d{yyyy-MMM-dd HH:mm:ss.SSS}]|[%thread] %-5level %logger{36} - %msg%n"/>
+    <!-- 项目名称 -->
+    <contextName>${appName}</contextName>
+    <!-- Insert the current time formatted as "yyyyMMdd'T'HHmmss" under
+       the key "bySecond" into the logger context. This value will be
+       available to all subsequent configuration elements. -->
+    <timestamp key="bySecond" datePattern="yyyyMMdd" timeReference="contextBirth"/>
+    <!-- appender很重要，一个配置文件会有多个appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 过滤器，一个appender可以有多个 -->
+        <!-- 阈值过滤，就是log行为级别过滤，debug及debug以上的信息会被打印出来 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>debug</level>
+        </filter>
+        <!-- encoders are assigned the type
+                    ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <!-- encoder编码规则 -->
+        <encoder>
+            <pattern>${fmt}</pattern>
+        </encoder>
+    </appender>
+    <!-- 文件日志 -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <!-- 被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值 -->
+        <file>${USER_HOME}/debug.log</file>
+        <!-- 如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true -->
+        <append>false</append>
+        <!-- 对记录事件进行格式化 -->
+        <encoder>
+            <pattern>${fmt}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 滚动日志 -->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${USER_HOME}/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 控制保留的归档文件的最大数量，超出数量就删除旧文件 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <!-- 对记录事件进行格式化 -->
+        <encoder>
+            <pattern>${fmt}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="ROLLING_FILE" />
+    </root>
+</configuration>
