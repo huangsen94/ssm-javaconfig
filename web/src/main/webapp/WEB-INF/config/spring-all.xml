@@ -8,7 +8,6 @@
         <property name="location" value="classpath:config/dataSource.properties" />
     </bean>
 
-
     <!-- 引入配置 -->
     <import resource="spring-dao.xml" />
     <import resource="spring-service.xml" />
