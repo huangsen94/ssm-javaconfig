@@ -5,6 +5,10 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+
+import java.io.IOException;
 
 /**
  * Created by hs on 2017/3/31.
@@ -58,8 +62,17 @@ public class DaoConfig {
     public SqlSessionFactoryBean sqlSessionFactoryBean() {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
-//        sqlSessionFactoryBean.setConfigLocation();
-//        sqlSessionFactoryBean.setMapperLocations();
+
+        //添加XML目录
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        try {
+            sqlSessionFactoryBean.setConfigLocation(resolver.getResource("classpath:mybatisConfig.xml"));
+            String mapperLocation = "classpath:mappers/mysql/*Mapper.xml";
+            sqlSessionFactoryBean.setMapperLocations(resolver.getResources(mapperLocation));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
         return sqlSessionFactoryBean;
     }
