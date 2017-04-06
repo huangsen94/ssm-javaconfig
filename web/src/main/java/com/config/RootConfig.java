@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({DaoConfig.class, ServiceConfig.class})
-public class AppConfig {
+public class RootConfig {
 
 }
