@@ -23,7 +23,6 @@
 
         <!-- spring -->
         <spring.version>4.3.4.RELEASE</spring.version>
-        <mysql.driver.version>5.1.4</mysql.driver.version>
 
         <!-- mybatis -->
         <mybatis.version>3.4.1</mybatis.version>
@@ -42,6 +41,7 @@
         <druid.version>1.0.28</druid.version>
         <commons.lang3.version>3.5</commons.lang3.version>
         <commons.collections4.version>4.1</commons.collections4.version>
+        <mysql.driver.version>5.1.4</mysql.driver.version>
 
         <!-- aspectj -->
         <aspectjweaver.version>1.8.10</aspectjweaver.version>
